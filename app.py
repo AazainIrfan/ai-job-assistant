@@ -68,7 +68,7 @@ def load_gif_as_base64(path):
     return data
 
 # NEW: Cached function to get and update visitor count from jsonbin.io
-@st.cache_resource
+@st.cache_data
 def get_visitor_count():
     # Get your credentials from environment variables
     api_key = os.environ.get("JSONBIN_API_KEY")
