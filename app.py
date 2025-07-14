@@ -91,7 +91,7 @@ def get_visitor_count():
 
         return visits
     except Exception as e:
-        return "-"
+        return f"API Error: {e}"
 
 def get_ai_response(resume, job_desc):
     """
