@@ -68,7 +68,7 @@ def load_gif_as_base64(path):
     return data
 
 # NEW: Cached function to get and update visitor count from jsonbin.io
-@st.cache_data
+
 def get_visitor_count():
     # Get your credentials from environment variables
     api_key = os.environ.get("JSONBIN_API_KEY")
@@ -133,15 +133,22 @@ def get_ai_response(resume, job_desc):
         return f"An error occurred: {e}"
 
 # --- Sidebar UI ---
+# --- Sidebar UI ---
 with st.sidebar:
     st.header("About")
     st.info(
         "This tool helps you tailor your resume to a specific job description "
         "using the power of Large Language Models."
     )
+    
+    # NEW: Use Session State to manage the visitor count
+    if 'visitor_count' not in st.session_state:
+        # If the count is not in the session state, call the API and store the result
+        st.session_state.visitor_count = get_visitor_count()
+    
+    # Display the count from the session state
+    st.metric(label="Website Visits", value=st.session_state.visitor_count)
 
-    visitor_count = get_visitor_count()
-    st.metric(label="Website Visits", value=visitor_count)
     st.markdown("---")
     st.subheader("Connect with me:")
     st.markdown("[LinkedIn](https://www.linkedin.com/in/aazain-irfan/)", unsafe_allow_html=True)
