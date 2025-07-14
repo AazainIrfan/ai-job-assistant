@@ -12,11 +12,11 @@ load_dotenv()
 
 # --- App Configuration ---
 st.set_page_config(
-    page_title="AI Job Application Assistant",
+    page_title="AI Resume Reviewer - Free Resume Analysis Tool",
     page_icon="🤖",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
-
 # NEW: Add Google verification meta tag
 st.markdown(
     '<meta name="google-site-verification" '
