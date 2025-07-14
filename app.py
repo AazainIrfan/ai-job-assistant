@@ -3,6 +3,9 @@ import streamlit as st
 from groq import Groq
 from dotenv import load_dotenv
 import base64
+import requests
+
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -137,10 +140,8 @@ with st.sidebar:
         "using the power of Large Language Models."
     )
 
-    # NEW: Add the visitor counter here
     visitor_count = get_visitor_count()
     st.metric(label="Website Visits", value=visitor_count)
-
     st.markdown("---")
     st.subheader("Connect with me:")
     st.markdown("[LinkedIn](https://www.linkedin.com/in/aazain-irfan/)", unsafe_allow_html=True)
