@@ -47,6 +47,10 @@ st.markdown("""
     [data-testid="stStatus"] > div:first-child {
         display: none;
     }
+    /* Metric label */
+    [data-testid="stMetricLabel"] {
+        color: black !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -59,6 +63,35 @@ def load_gif_as_base64(path):
     with open(path, "rb") as f:
         data = base64.b64encode(f.read()).decode("utf-8")
     return data
+
+# NEW: Cached function to get and update visitor count from jsonbin.io
+@st.cache_resource
+def get_visitor_count():
+    # Get your credentials from environment variables
+    api_key = os.environ.get("JSONBIN_API_KEY")
+    bin_id = os.environ.get("JSONBIN_BIN_ID")
+    
+    if not api_key or not bin_id:
+        return "N/A" # Return N/A if secrets are not set
+
+    headers = {
+        'X-Master-Key': api_key
+    }
+    
+    try:
+        # 1. Read the current count
+        get_req = requests.get(f"https://api.jsonbin.io/v3/b/{bin_id}/latest", headers=headers)
+        get_req.raise_for_status() 
+        visits = get_req.json()['record']['visits']
+        
+        # 2. Increment the count and update the bin
+        visits += 1
+        put_req = requests.put(f"https://api.jsonbin.io/v3/b/{bin_id}", headers=headers, json={'visits': visits})
+        put_req.raise_for_status()
+
+        return visits
+    except Exception as e:
+        return "-"
 
 def get_ai_response(resume, job_desc):
     """
@@ -103,6 +136,11 @@ with st.sidebar:
         "This tool helps you tailor your resume to a specific job description "
         "using the power of Large Language Models."
     )
+
+    # NEW: Add the visitor counter here
+    visitor_count = get_visitor_count()
+    st.metric(label="Website Visits", value=visitor_count)
+
     st.markdown("---")
     st.subheader("Connect with me:")
     st.markdown("[LinkedIn](https://www.linkedin.com/in/aazain-irfan/)", unsafe_allow_html=True)
