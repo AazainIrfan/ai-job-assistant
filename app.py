@@ -17,6 +17,10 @@ st.set_page_config(
     layout="wide"
 )
 
+# NEW: Add Google verification meta tag
+st.markdown('<meta name="google-site-verification" content="<meta name="google-site-verification" content="pEQapcdTkxkhy-qVo5nGZZzzhH71WfiK-k3fXiNC2tw" />" />', unsafe_allow_html=True)
+
+
 # --- Custom CSS ---
 st.markdown("""
 <style>
